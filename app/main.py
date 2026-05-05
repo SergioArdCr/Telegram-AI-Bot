@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
-from telegram import Bot
 from telegram.ext import ApplicationBuilder, MessageHandler, filters
 from app.bot.handlers import handle_message
 import os
@@ -9,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")  # URL pública de Railway
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 bot_app = None
 
@@ -21,7 +20,6 @@ async def lifespan(app: FastAPI):
     await bot_app.initialize()
     await bot_app.start()
 
-    # En producción usa webhook, en local usa polling
     if WEBHOOK_URL:
         await bot_app.bot.set_webhook(f"{WEBHOOK_URL}/webhook")
     else:
@@ -39,7 +37,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-# Solo necesario en producción con webhook, en local con polling no se necesita este endpoint
 @app.post("/webhook")
 async def webhook(request: Request):
     data = await request.json()
