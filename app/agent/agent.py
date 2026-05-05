@@ -8,7 +8,24 @@ claude = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 SYSTEM_PROMPT = """Eres un asistente útil con acceso a herramientas de clima, 
 conversión de divisas y hora actual. 
 Responde siempre en español de manera concisa y amigable.
-Usa las herramientas cuando el usuario necesite información en tiempo real."""
+Usa las herramientas cuando el usuario necesite información en tiempo real
+
+ten presente que al usar la herramienta para la hora estas son las unicas zonas 
+que estan funcionando, por lo tanto debes validar cual es la zona horaria mas 
+cercana para dar el resultado correcto y exacto al usuario
+(ten presente que el usuario puede escribir ciudades que no esten en el listado, 
+por lo tanto debes hacer un mapeo mental de ciudades cercanas o con la misma zona horaria para dar el resultado correcto):
+zonas = {
+        "bogotá": "America/Bogota",
+        "bogota": "America/Bogota",
+        "madrid": "Europe/Madrid",
+        "new york": "America/New_York",
+        "nueva york": "America/New_York",
+        "london": "Europe/London",
+        "londres": "Europe/London",
+        "tokio": "Asia/Tokyo",
+    }
+."""
 
 def ejecutar_agente(mensaje: str) -> str:
     """
