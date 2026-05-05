@@ -66,13 +66,13 @@ def get_current_time(ciudad: str) -> dict:
     zona = zonas.get(ciudad.lower(), "America/Bogota")
     try:
         response = httpx.get(
-            f"http://worldtimeapi.org/api/timezone/{zona}",
+            f"https://timeapi.io/api/Time/current/zone?timeZone={zona}",
             timeout=10
         )
         data = response.json()
         return {
             "ciudad": ciudad,
-            "hora": data["datetime"],
+            "hora": data["time"],
             "zona_horaria": zona
         }
     except Exception as e:
